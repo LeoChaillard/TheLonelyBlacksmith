@@ -22,6 +22,7 @@ public:
 	void Init();
 	void Run();
 	Player& GetPlayer();
+	int GetRemainingTurns() const;
 	void RemoveTurns(int _turns);
 	void AddScore(int _iScore);
 protected:

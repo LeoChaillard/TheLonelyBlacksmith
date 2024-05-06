@@ -7,6 +7,13 @@ Tool::Tool()
 {
 }
 
+Tool::Tool(const Tool& _tool)
+	: toolType(_tool.toolType),
+	material(_tool.material)
+{
+}
+
+
 Tool::Tool(ToolType _toolType, Material _material)
 	: toolType(_toolType),
 	material(_material)

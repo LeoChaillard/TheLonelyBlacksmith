@@ -20,12 +20,14 @@ public:
 	Inventory(const Inventory& _inventory);
 	~Inventory() = default;
 
-	int GetMaterialQuantity(Material _material);
+	void AddTool(Tool& _tool);
 	void AddMaterial(Material _material, int _iQuantity = 1);
 	void RemoveMaterial(Material _material, int _iQuantity = 1);
-	void AddTool(const Tool& _tool);
+
+	int GetMaterialQuantity(Material _material);
 	Tool& GetCurrentBestPickaxe();
 	Tool& GetCurrentBestAxe();
+
 	bool HasMaterial(const Material& _material);
 	bool HasTool(const Tool& _tool);
 protected:

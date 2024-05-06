@@ -36,7 +36,7 @@ int Recipe::GetScoreOnCraft() const
 	return iScoreOnCraft;
 }
 
-Tool Recipe::GetPrerequisiteTool() const
+Tool& Recipe::GetPrerequisiteTool()
 {
 	return prerequisiteTool;
 }

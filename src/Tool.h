@@ -3,7 +3,6 @@
 
 #include "ToolType.h"
 #include "Material.h"
-#include "Resource.h"
 
 class Tool
 {
@@ -14,6 +13,7 @@ private:
 	Material material;
 public:
 	Tool();
+	Tool(const Tool& _tool);
 	Tool(ToolType _toolType, Material _material);
 	~Tool() = default;
 	

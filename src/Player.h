@@ -11,6 +11,7 @@ public:
 protected:
 private:
 	Inventory inventory;
+
 	std::multimap<Tool, std::tuple<int, int>> woodCollectionIntervals;
 	std::multimap<Tool, std::tuple<int, int>> stoneCollectionIntervals;
 	std::multimap<Tool, std::tuple<int, int>> ironCollectionIntervals;
@@ -19,10 +20,10 @@ public:
 	Player();
 	~Player() = default;
 
-	bool Collect(Material _material);
-	bool Craft(Tool _tool);
+	bool TryCollect(Material _material);
+	bool TryCraft(Tool _tool);
 	Inventory& GetInventory();
-	int GetRandomQuantity(Material _material);
+	int GetRandomQuantity(const Material& _material);
 protected:
 private:
 };

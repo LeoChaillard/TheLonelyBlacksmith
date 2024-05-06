@@ -8,7 +8,7 @@ protected:
 private:
 
 public:
-	UserInterface();
+	UserInterface() = default;
 	~UserInterface() = default;
 
 	static UserInterface* GetInstance();

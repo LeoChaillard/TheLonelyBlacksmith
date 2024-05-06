@@ -64,7 +64,7 @@ void Inventory::RemoveMaterial(Material _material, int _iQuantity/* = 1 */)
 	}
 }
 
-void Inventory::AddTool(const Tool& _tool)
+void Inventory::AddTool(Tool& _tool)
 {
 	std::map<Tool, int>::iterator it = toolQuantities.find(_tool);
 	if (it != toolQuantities.end())

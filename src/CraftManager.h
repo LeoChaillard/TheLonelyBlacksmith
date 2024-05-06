@@ -13,7 +13,7 @@ private:
 	std::multimap<Tool, Recipe> crafts;
 
 public:
-	CraftManager();
+	CraftManager() = default;
 	~CraftManager() = default;
 
 	static CraftManager* GetInstance();
@@ -21,7 +21,7 @@ public:
 	void InitCrafts();
 	bool CheckAndMakeCraft(Inventory& _inventory, Tool& _tool);
 	Recipe& GetRecipe(Tool& _tool);
-	std::multimap<Tool, Recipe> GetCrafts();
+	std::multimap<Tool, Recipe>& GetCrafts();
 protected:
 private:
 };

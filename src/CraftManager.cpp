@@ -11,10 +11,6 @@ namespace constants
 	const char* strRecipeFileName = "recipes.txt";
 }
 
-CraftManager::CraftManager()
-{
-}
-
 void CraftManager::InitCrafts()
 {
 	// Temporary recipe list
@@ -46,23 +42,24 @@ void CraftManager::InitCrafts()
 		}
 	}
 
+	// Adding tool crafts
 	crafts.insert({ Tool(ToolType::PICKAXE, Material::WOOD), recipesList.at(0)});
 	crafts.insert({ Tool(ToolType::AXE, Material::WOOD), recipesList.at(1) });
 	crafts.insert({ Tool(ToolType::HAMMER, Material::BASIC), recipesList.at(2) });
 	crafts.insert({ Tool(ToolType::PICKAXE, Material::STONE), recipesList.at(3) });
 	crafts.insert({ Tool(ToolType::AXE, Material::STONE), recipesList.at(4) });
 
-	recipesList.at(5).AddPrerequisiteTool(Tool(ToolType::HAMMER, Material::BASIC));
-	crafts.insert({ Tool(ToolType::HAMMER, Material::STONE), recipesList.at(5) }); // basic hammer required
+	recipesList.at(5).AddPrerequisiteTool(Tool(ToolType::HAMMER, Material::BASIC)); // basic hammer required
+	crafts.insert({ Tool(ToolType::HAMMER, Material::STONE), recipesList.at(5) }); 
 
 	crafts.insert({ Tool(ToolType::PICKAXE, Material::IRON), recipesList.at(6) });
 	crafts.insert({ Tool(ToolType::AXE, Material::IRON), recipesList.at(7) });
 
-	recipesList.at(8).AddPrerequisiteTool(Tool(ToolType::HAMMER, Material::STONE));
-	crafts.insert({ Tool(ToolType::HAMMER, Material::IRON), recipesList.at(8) }); // stone hammer required
+	recipesList.at(8).AddPrerequisiteTool(Tool(ToolType::HAMMER, Material::STONE)); // stone hammer required
+	crafts.insert({ Tool(ToolType::HAMMER, Material::IRON), recipesList.at(8) }); 
 
-	recipesList.at(9).AddPrerequisiteTool(Tool(ToolType::HAMMER, Material::IRON));
-	crafts.insert({ Tool(ToolType::FORGE, Material::UNSPECIFIED), recipesList.at(9) }); // iron hammer required
+	recipesList.at(9).AddPrerequisiteTool(Tool(ToolType::HAMMER, Material::IRON)); // iron hammer required
+	crafts.insert({ Tool(ToolType::FORGE, Material::UNSPECIFIED), recipesList.at(9) }); 
 }
 
 CraftManager* CraftManager::GetInstance()
@@ -123,7 +120,7 @@ Recipe& CraftManager::GetRecipe(Tool& _tool)
 	return crafts.find(_tool)->second;
 }
 
-std::multimap<Tool, Recipe> CraftManager::GetCrafts()
+std::multimap<Tool, Recipe>& CraftManager::GetCrafts()
 {
 	return crafts;
 }

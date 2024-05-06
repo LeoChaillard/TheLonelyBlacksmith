@@ -3,11 +3,6 @@
 #include "UserInterface.h"
 #include "GameManager.h"
 #include "CraftManager.h"
-#include "Resource.h"
-
-UserInterface::UserInterface()
-{
-}
 
 UserInterface* UserInterface::GetInstance()
 {
@@ -26,7 +21,7 @@ void UserInterface::HandleDisplay()
 
 void UserInterface::DisplayWelcome()
 {
-	std::cout << "**********Welcome to The Lonely Blacksmith game!**********" << std::endl;
+	std::cout << "**********Welcome to The Lonely Blacksmith game!**********" << std::endl << std::endl;
 }
 
 void UserInterface::DisplayMainMenu()
@@ -35,6 +30,7 @@ void UserInterface::DisplayMainMenu()
 	std::cout << "2. Craft tool" << std::endl;
 	std::cout << "3. Display resources" << std::endl;
 
+	// Only accepting integers
 	std::string strInput;
 	do
 	{
@@ -56,7 +52,6 @@ void UserInterface::DisplayMainMenu()
 		DisplayResourcesMenu();
 		break;
 	default:
-		// wrong input
 		break;
 	}
 }
@@ -71,6 +66,13 @@ void UserInterface::DisplayCollectMenu()
 	int iChoice = 0;
 	while (iChoice != 4)
 	{
+		// Checking remaining turns
+		if (GameManager::GetInstance()->GetRemainingTurns() <= 0)
+		{
+			return;
+		}
+
+		// Only accepting integers
 		std::string strInput;
 		do
 		{
@@ -78,23 +80,21 @@ void UserInterface::DisplayCollectMenu()
 		} while (!IsValidInt(strInput));
 
 		iChoice = std::stoi(strInput);
+		std::cout << std::endl;
 
+		// Trying to collect the chosen resource
 		switch (iChoice)
 		{
 		case 1:
-			GameManager::GetInstance()->GetPlayer().Collect(Material::WOOD);
+			GameManager::GetInstance()->GetPlayer().TryCollect(Material::WOOD);
 			break;
 		case 2:
-			GameManager::GetInstance()->GetPlayer().Collect(Material::STONE);
+			GameManager::GetInstance()->GetPlayer().TryCollect(Material::STONE);
 			break;
 		case 3:
-			GameManager::GetInstance()->GetPlayer().Collect(Material::IRON);
-			break;
-		case 4:
-			std::cout << "Returning to menu..." << std::endl;
+			GameManager::GetInstance()->GetPlayer().TryCollect(Material::IRON);
 			break;
 		default:
-			// wrong input
 			break;
 		}
 	}
@@ -105,10 +105,17 @@ void UserInterface::DisplayCraftMenu()
 	int iChoice = 0;
 	while(iChoice != 3)
 	{
+		// Checking remaining turns
+		if (GameManager::GetInstance()->GetRemainingTurns() <= 0)
+		{
+			return;
+		}
+
 		std::cout << "1. Craft a wood pickaxe - 1 turn - 2 Wood - 10 points" << std::endl; // TODO: display currently highest craftable tool
 		std::cout << "2. Craft... (see available recipes)" << std::endl;
 		std::cout << "3. Return to main menu" << std::endl;
 
+		// Only accepting integers
 		std::string strInput;
 		do
 		{
@@ -122,9 +129,8 @@ void UserInterface::DisplayCraftMenu()
 		{
 		case 1:
 		{
-			// display currently highest craftable object
-			Tool tool(ToolType::PICKAXE, Material::WOOD);
-			GameManager::GetInstance()->GetPlayer().Craft(tool);
+			Tool tool(ToolType::PICKAXE, Material::WOOD); // TODO: craft currently highest craftable tool
+			GameManager::GetInstance()->GetPlayer().TryCraft(tool);
 			break;
 		}
 		case 2:
@@ -133,6 +139,7 @@ void UserInterface::DisplayCraftMenu()
 			std::cout << "*****RECIPES*****" << std::endl << std::endl;
 			int iCraftCounter = 0;
 
+			// Displaying recipes
 			for (auto& element : crafts)
 			{
 				++iCraftCounter;
@@ -148,8 +155,9 @@ void UserInterface::DisplayCraftMenu()
 				{
 					std::cout << resource.iQuantity << " " << resource.material.ToString() << " - ";
 				}
-
 				std::cout << element.second.GetScoreOnCraft() << " points";
+
+				// Prerequisite
 				if (element.second.GetPrerequisiteTool().GetToolType() != ToolType::UNSPECIFIED)
 				{
 					std::cout << " (" << element.second.GetPrerequisiteTool().GetMaterial().ToString()
@@ -158,6 +166,7 @@ void UserInterface::DisplayCraftMenu()
 				std::cout << std::endl;
 			}			
 
+			// Only accepting integers
 			std::string strInput;
 			do
 			{
@@ -167,6 +176,7 @@ void UserInterface::DisplayCraftMenu()
 			int iCraftChoice = std::stoi(strInput);
 			std::cout << std::endl;
 
+			// Trying to craft the chosen tool
 			iCraftCounter = 0;
 			for (std::multimap<Tool, Recipe>::iterator it = crafts.begin(); it != crafts.end(); ++it)
 			{
@@ -174,22 +184,16 @@ void UserInterface::DisplayCraftMenu()
 
 				if (iCraftChoice == iCraftCounter)
 				{
-					GameManager::GetInstance()->GetPlayer().Craft(it->first);
+					GameManager::GetInstance()->GetPlayer().TryCraft(it->first);
 					break;
 				}
 			}
-
 			break;
 		}
-		case 3:
-			std::cout << "Returning to menu..." << std::endl;
-			break;
 		default:
-			// wrong input
 			break;
 		}
 	}
-	std::cout << "Back to menu..." << std::endl;
 }
 
 void UserInterface::DisplayResourcesMenu()
@@ -203,6 +207,7 @@ void UserInterface::DisplayResourcesMenu()
 	int iChoice = 0;
 	while (iChoice != 2)
 	{
+		// Only accepting integers
 		std::string strInput;
 		do
 		{

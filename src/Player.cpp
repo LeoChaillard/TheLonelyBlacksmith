@@ -77,7 +77,7 @@ Player::Player()
 	inventory.AddMaterial(Material::IRON, constants::iInitialIron);
 }
 
-bool Player::Collect(Material _material)
+bool Player::TryCollect(Material _material)
 {
 	if (_material == Material::IRON && inventory.GetCurrentBestPickaxe().GetToolType() == ToolType::UNSPECIFIED)
 	{
@@ -85,15 +85,18 @@ bool Player::Collect(Material _material)
 		return false;
 	}
 
+	// Updating turns
 	GameManager::GetInstance()->RemoveTurns(1);
+
+	// Adding random quantity of resource
 	int iRandomQuantity = GetRandomQuantity(_material);
+	inventory.AddMaterial(_material, iRandomQuantity);
 	std::cout << "Collected " << iRandomQuantity << " " << _material.ToString() << std::endl;
 
-	inventory.AddMaterial(_material, iRandomQuantity);
 	return true;
 }
 
-bool Player::Craft(Tool _tool)
+bool Player::TryCraft(Tool _tool)
 {
 	if (CraftManager::GetInstance()->CheckAndMakeCraft(inventory, _tool))
 	{
@@ -109,7 +112,7 @@ Inventory& Player::GetInventory()
 	return inventory;
 }
 
-int Player::GetRandomQuantity(Material _material)
+int Player::GetRandomQuantity(const Material& _material)
 {
 	int iLow = 1, iHigh = 1;
 	std::multimap<Tool, std::tuple<int, int>>::iterator it;
@@ -129,6 +132,7 @@ int Player::GetRandomQuantity(Material _material)
 
 	}
 
+	// Retrieving values
 	std::tuple<int, int> interval = it->second;
 	iLow = std::get<0>(interval);
 	iHigh = std::get<1>(interval);

@@ -27,8 +27,6 @@ GameManager* GameManager::GetInstance()
 
 void GameManager::Init()
 {
-	// retrieve iTurns limit
-	// resource manager init to load recipes??
 	CraftManager::GetInstance()->InitCrafts();
 }
 
@@ -40,9 +38,9 @@ void GameManager::Run()
 	{
 		if (iTurns <= 0)
 		{
+			std::cout << "You used all your turns! Your final score is " << iScore << std::endl;
 			return;
 		}
-		std::cout << "Displaying Menu..." << std::endl;
 		UserInterface::GetInstance()->HandleDisplay();
 	}
 }
@@ -50,6 +48,11 @@ void GameManager::Run()
 Player& GameManager::GetPlayer()
 {
 	return player;
+}
+
+int GameManager::GetRemainingTurns() const
+{
+	return iTurns;
 }
 
 void GameManager::RemoveTurns(int _turns)

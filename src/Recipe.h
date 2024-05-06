@@ -31,7 +31,7 @@ public:
 	void AddPrerequisiteTool(Tool _tool);
 	int GetTurnsToCraft() const;
 	int GetScoreOnCraft() const;
-	Tool GetPrerequisiteTool() const;
+	Tool& GetPrerequisiteTool();
 protected:
 private:
 };
